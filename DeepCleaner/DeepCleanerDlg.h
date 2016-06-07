@@ -53,6 +53,7 @@ public:
 
 private:
 	bool		_bSearching;
+	CStringArray mi;
 	CFileFinder	_finder;
 	CString SHA1(CString &inData);
 public:

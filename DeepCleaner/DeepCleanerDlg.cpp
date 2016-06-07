@@ -123,6 +123,22 @@ BOOL CDeepCleanerDlg::OnInitDialog()
 	m_list.InsertColumn(3, "处理方式", LVCFMT_LEFT, 60, 3);
 
 	_finder.SetCallback(FileFinderProc, this);
+	
+	try{
+		CStdioFile config;
+		CString oneLine;
+		if(config.Open(_T("conf\\lib.config"), CFile::modeRead))
+			while (config.ReadString(oneLine))
+			{
+				mi.Add(oneLine);
+			}
+		config.Close();
+	}
+	catch (CFileException* e)
+	{
+		if (e->m_cause == CFileException::accessDenied)
+			AfxMessageBox("ERROR: Access Denied\n");
+	}
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -219,23 +235,6 @@ void CDeepCleanerDlg::OnBnClickedBrowse()
 
 void CDeepCleanerDlg::doSearch()
 {
-	CStringArray mi;
-	mi.Add("*军*");
-	mi.Add("*密*");
-	mi.Add("*党*");
-	mi.Add("*信息工程大学*");
-	mi.Add("*信大*");
-	mi.Add("*营*");
-	mi.Add("*旅*");
-	mi.Add("*院*");
-	mi.Add("*连*");
-	mi.Add("*兵*");
-	mi.Add("*战*");
-	mi.Add("IMG*.jpg");
-	mi.Add("DSC*.jpg");
-	//mi.Add("*.avi");
-	//mi.Add("*.rmvb");
-	//mi.Add("*.mkv");
 	
 	if (_bSearching)//如果上次查询正在进行，取消上次查询
 	{
@@ -589,23 +588,6 @@ void CDeepCleanerDlg::OnNMDblclkList(NMHDR *pNMHDR, LRESULT *pResult)
 //全盘搜索
 void CDeepCleanerDlg::OnBnClickedSearch2()
 {
-	CStringArray mi;
-	mi.Add("*军*");
-	mi.Add("*密*");
-	mi.Add("*党*");
-	mi.Add("*信息工程大学*");
-	mi.Add("*信大*");
-	mi.Add("*营*");
-	mi.Add("*旅*");
-	mi.Add("*院*");
-	mi.Add("*连*");
-	mi.Add("*兵*");
-	mi.Add("*战*");
-	mi.Add("IMG*.jpg");
-	mi.Add("DSC*.jpg");
-	//mi.Add("*.avi");
-	//mi.Add("*.rmvb");
-	//mi.Add("*.mkv");
 
 	if (_bSearching)//如果上次查询正在进行，取消上次查询
 	{
