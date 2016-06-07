@@ -1,0 +1,6 @@
+Debug/
+ipch/
+Release/
+/DeepCleaner/Debug/
+/DeepCleaner/Release/
+*.sdf
