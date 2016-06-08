@@ -77,11 +77,5 @@
     <Image Include="res\DeepCleaner.ico">
       <Filter>资源文件</Filter>
     </Image>
-    <Image Include="res\icon1.ico">
-      <Filter>资源文件</Filter>
-    </Image>
-    <Image Include="C:\Users\liu\Desktop\5be042f3f8_64.ico">
-      <Filter>资源文件</Filter>
-    </Image>
   </ItemGroup>
 </Project>

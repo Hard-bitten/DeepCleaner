@@ -5,7 +5,6 @@
 #pragma once
 #include "FileFinder.h"
 #include "LineColorListCtrl.h"
-#define _WIN32_WINNT 0x0400
 #include <tchar.h>
 #include <wincrypt.h>
 // CDeepCleanerDlg ¶Ô»°¿ò
@@ -56,6 +55,7 @@ private:
 	CStringArray mi;
 	CFileFinder	_finder;
 	CString SHA1(CString &inData);
+	CString  miyao = "~#&AIE*(@a19GFd42$8$^3";
 public:
 	afx_msg void OnBnClickedSloveN();
 	afx_msg void OnBnClickedSloveD();
@@ -66,4 +66,7 @@ public:
 	afx_msg void OnBnClickedBrowse2();
 	afx_msg void OnNMDblclkList(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedSearch2();
+	afx_msg void OnBnClickedSloveR2();
+	afx_msg void OnBnClickedSloveR3();
+	afx_msg void OnBnClickedCrypto();
 };

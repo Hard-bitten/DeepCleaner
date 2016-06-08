@@ -79,6 +79,8 @@ BEGIN_MESSAGE_MAP(CDeepCleanerDlg, CDialogEx)
 	ON_BN_CLICKED(ID_BROWSE2, &CDeepCleanerDlg::OnBnClickedBrowse2)
 	ON_NOTIFY(NM_DBLCLK, IDC_LIST, &CDeepCleanerDlg::OnNMDblclkList)
 	ON_BN_CLICKED(IDC_SEARCH2, &CDeepCleanerDlg::OnBnClickedSearch2)
+	ON_BN_CLICKED(IDC_SLOVE_R3, &CDeepCleanerDlg::OnBnClickedSloveR3)
+	ON_BN_CLICKED(IDC_CRYPTO, &CDeepCleanerDlg::OnBnClickedCrypto)
 END_MESSAGE_MAP()
 
 
@@ -281,7 +283,7 @@ void CDeepCleanerDlg::FileFinderProc(CFileFinder *pFinder, DWORD dwCode, void *p
 	CString			sText, sNewFile;
 	MSG				msg;
 	CDeepCleanerDlg	*pDlg = (CDeepCleanerDlg *)pCustomParam;
-	int				nListIndex;
+//	int				nListIndex;
 
 	switch (dwCode)
 	{
@@ -436,7 +438,14 @@ void CDeepCleanerDlg::OnBnClickedExe()
 	int _m=0, _d=0;
 	CFile temp;
 	CString _file;
-
+	
+	CString workfile;
+	CStdioFile out;
+	BOOL outopen =FALSE;
+	if (out.Open(_T("out\\Crypto.out"), CFile::modeReadWrite | CFile::modeCreate))
+		outopen = TRUE;
+	if (outopen)
+		out.WriteString(miyao);
 	UpdateData(TRUE);
 	for (int i = 0; i < n; i++){
 		if (m_list.GetItemText(i, 3) == "移动"){
@@ -494,7 +503,24 @@ void CDeepCleanerDlg::OnBnClickedExe()
 			END_CATCH
 		
 		}
+		else if (m_list.GetItemText(i, 3) == "加密"){
+
+			try{
+				BOOL CryptoFlag=FALSE;
+				_filefrom = (m_list.GetItemText(i, 1) + m_list.GetItemText(i, 0));
+				//加密文件
+
+				if (outopen && CryptoFlag)
+					out.WriteString(_filefrom);
+			}
+			catch (CFileException* e)
+			{
+				if (e->m_cause == CFileException::accessDenied)
+					AfxMessageBox("ERROR: Access Denied\n");
+			}
+		}
 	}
+	out.Close();
 	sStatus.Format("%d 个移动成功,%d 个删除成功，%d个失败！", _m,_d,(sm-_m+sd-_d));
 	GetDlgItem(IDC_STATUS)->SetWindowText(sStatus);
 }
@@ -627,4 +653,35 @@ void CDeepCleanerDlg::OnBnClickedSearch2()
 	_bSearching = false;
 
 	SetStatus(_finder.GetFileCount());
+}
+
+
+void CDeepCleanerDlg::OnBnClickedSloveR3()
+{
+	//弹窗口 给密钥赋予初值
+
+	//进行标记
+	int n = m_list.GetItemCount();
+	for (int i = 0; i < n; i++){
+		if (m_list.GetCheck(i))
+		{
+			m_list.SetItemText(i, 3, "");
+			m_list.SetItemColor(i, RGB(0, 0, 0), RGB(255, 255, 255));
+		}
+		m_list.SetCheck(i, 0);
+	}
+}
+
+
+void CDeepCleanerDlg::OnBnClickedCrypto()
+{
+	int n = m_list.GetItemCount();
+	for (int i = 0; i < n; i++){
+		if (m_list.GetCheck(i))
+		{
+			m_list.SetItemText(i, 3, "加密");
+			m_list.SetItemColor(i, RGB(0, 0, 0), RGB(255, 255, 255));
+		}
+		m_list.SetCheck(i, 0);
+	}
 }
