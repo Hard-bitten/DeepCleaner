@@ -42,6 +42,9 @@
     <ClInclude Include="LineColorListCtrl.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="MyCrypto.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DeepCleaner.cpp">
@@ -60,6 +63,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="LineColorListCtrl.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MyCrypto.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

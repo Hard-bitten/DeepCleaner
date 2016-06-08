@@ -7,6 +7,7 @@
 #include "DeepCleanerDlg.h"
 #include "afxdialogex.h"
 #include "path.h"
+#include "MyCrypto.h"
 
 
 #ifdef _DEBUG
@@ -126,6 +127,8 @@ BOOL CDeepCleanerDlg::OnInitDialog()
 
 	_finder.SetCallback(FileFinderProc, this);
 	
+	CString a="fdadfafadf", b="liukaixuan", result;
+	result=MyCrypto::EncryptString(a, b);
 	try{
 		CStdioFile config;
 		CString oneLine;
@@ -372,9 +375,6 @@ int	CDeepCleanerDlg::FindInList(LPCTSTR szFilename)
 	return (bFound ? nIndex : -1);
 }
 
-
-
-
 void CDeepCleanerDlg::OnBnClickedSloveD()
 {
 	int n = m_list.GetItemCount();
@@ -387,7 +387,6 @@ void CDeepCleanerDlg::OnBnClickedSloveD()
 		m_list.SetCheck(i, 0);
 	}
 }
-
 
 void CDeepCleanerDlg::OnBnClickedSloveR()
 {
@@ -410,7 +409,6 @@ void CDeepCleanerDlg::OnBnClickedSloveD2()
 	}
 }
 
-
 void CDeepCleanerDlg::OnBnClickedSloveD3()
 {
 	int n = m_list.GetItemCount();
@@ -419,33 +417,32 @@ void CDeepCleanerDlg::OnBnClickedSloveD3()
 	}
 }
 
-
 void CDeepCleanerDlg::OnBnClickedExe()
 {
 	int n = m_list.GetItemCount();
-	int sm=0,sd=0;
+	int sm=0,sd=0,jm=0;
 	for (int i = 0; i < n; i++){
 		if (m_list.GetItemText(i, 3) == "移动")
 			sm++;
 		if (m_list.GetItemText(i, 3) == "删除")
 			sd++;
+		if (m_list.GetItemText(i, 3) == "加密")
+			jm++;
 	}
-	m_pro.SetStep(100/(sm+sd));
+	m_pro.SetStep(100/(sm+sd+jm));
 	CString _filefrom;
 	CString _fileout;
 	CString sStatus;
 	CString _hash;
-	int _m=0, _d=0;
+	int _m = 0, _d = 0, _jm = 0;;
 	CFile temp;
 	CString _file;
 	
-	CString workfile;
+	CString workfile="";
 	CStdioFile out;
 	BOOL outopen =FALSE;
-	if (out.Open(_T("out\\Crypto.out"), CFile::modeReadWrite | CFile::modeCreate))
+	if (out.Open(_T("conf\\Crypto.out"), CFile::modeReadWrite | CFile::modeCreate))
 		outopen = TRUE;
-	if (outopen)
-		out.WriteString(miyao);
 	UpdateData(TRUE);
 	for (int i = 0; i < n; i++){
 		if (m_list.GetItemText(i, 3) == "移动"){
@@ -506,12 +503,21 @@ void CDeepCleanerDlg::OnBnClickedExe()
 		else if (m_list.GetItemText(i, 3) == "加密"){
 
 			try{
-				BOOL CryptoFlag=FALSE;
 				_filefrom = (m_list.GetItemText(i, 1) + m_list.GetItemText(i, 0));
+				miyao = GetRandString();
+				workfile = (m_list.GetItemText(i, 1) + MyCrypto::EncryptString(m_list.GetItemText(i, 0),miyao));
 				//加密文件
-
-				if (outopen && CryptoFlag)
-					out.WriteString(_filefrom);
+				MyCrypto file(_filefrom, workfile,miyao,1);
+				if (outopen && file.run()){
+					_jm++;
+					m_pro.StepIt();
+					out.WriteString(miyao+" "+workfile+"\r\n");
+					DeleteFile(_filefrom);
+					m_list.DeleteItem(i);
+					n--;
+					i--;
+				}
+					
 			}
 			catch (CFileException* e)
 			{
@@ -524,7 +530,6 @@ void CDeepCleanerDlg::OnBnClickedExe()
 	sStatus.Format("%d 个移动成功,%d 个删除成功，%d个失败！", _m,_d,(sm-_m+sd-_d));
 	GetDlgItem(IDC_STATUS)->SetWindowText(sStatus);
 }
-
 
 void CDeepCleanerDlg::OnBnClickedBrowse2()
 {
@@ -564,8 +569,6 @@ void CDeepCleanerDlg::OnBnClickedBrowse2()
 
 	GetDlgItem(IDC_EDITOUT)->SetWindowText(sFolder);
 }
-
-
 
 CString CDeepCleanerDlg::SHA1(CString &inData)
 {
@@ -655,7 +658,6 @@ void CDeepCleanerDlg::OnBnClickedSearch2()
 	SetStatus(_finder.GetFileCount());
 }
 
-
 void CDeepCleanerDlg::OnBnClickedSloveR3()
 {
 	//弹窗口 给密钥赋予初值
@@ -671,7 +673,6 @@ void CDeepCleanerDlg::OnBnClickedSloveR3()
 		m_list.SetCheck(i, 0);
 	}
 }
-
 
 void CDeepCleanerDlg::OnBnClickedCrypto()
 {

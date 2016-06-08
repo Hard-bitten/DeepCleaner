@@ -69,4 +69,16 @@ public:
 	afx_msg void OnBnClickedSloveR2();
 	afx_msg void OnBnClickedSloveR3();
 	afx_msg void OnBnClickedCrypto();
+	CString GetRandString()
+
+	{
+		int max;
+		CString shuzi;
+		max = RAND_MAX;//rand()函数随机数的最大值
+		int randnum = (int)(rand()*(8999999.00) / max + 1000000.00);
+		shuzi.Format("%d", randnum);
+		CString result = SHA1(shuzi);
+		return result;
+	}
+
 };

@@ -105,6 +105,7 @@
     <ClInclude Include="DeepCleanerDlg.h" />
     <ClInclude Include="FileFinder.h" />
     <ClInclude Include="LineColorListCtrl.h" />
+    <ClInclude Include="MyCrypto.h" />
     <ClInclude Include="Path.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -115,6 +116,7 @@
     <ClCompile Include="DeepCleanerDlg.cpp" />
     <ClCompile Include="FileFinder.cpp" />
     <ClCompile Include="LineColorListCtrl.cpp" />
+    <ClCompile Include="MyCrypto.cpp" />
     <ClCompile Include="Path.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
